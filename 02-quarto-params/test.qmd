@@ -1,0 +1,26 @@
+---
+title: "param test"
+format:
+  html:
+    embed-resources: true
+editor: source
+params:
+  x: 10
+  y: 0.5
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+* The param x is `r params$x`
+* The param y is `r params$y`
+
+
+```{r}
+plot(rnorm(n = params$x,
+           mean = params$y))
+```
+
