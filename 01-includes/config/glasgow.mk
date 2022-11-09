@@ -1,2 +1,3 @@
-postal_districts = G1 G2 G3 G4 G5
+name = "Glasgow City Region"
+postal_districts = "^G\d{1,2}|^ML\d{1,2}|^PA[1-10]"
 

@@ -1,1 +1,3 @@
-postal_districts = "*"
+name = "United Kingdom"
+postal_districts = ".*"
+
