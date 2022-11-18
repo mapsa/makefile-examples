@@ -7,6 +7,7 @@ A set of notes and Makefiles examples.
 1. [Basic Concepts](#basic-concepts)
 1. [Special Targets](#special-targets)
 1. [Automatic Variables](#automatic-variables)
+1. [Text Functions](#text-functions)
 1. [Execution](#execution)
 1. [Debugging](#debugging)
 1. [More Elegant Options](#more-elegant-options)
@@ -126,6 +127,44 @@ $(OUTDIR)/my_%_file.csv: prerequisite1
 <tab>   echo $*
 ```
 If in the folder OUTDIR you have a csv file called `my_first_file.csv`, this will print `first`.
+
+## [Text Functions](https://www.gnu.org/software/make/manual/html_node/Text-Functions.html)
+
+**Wildcards**
+
+```bash
+CSVS = $(wildcard *.csv)
+```
+
+**String Substitution**
+
+Remember not adding spaces between commas:
+
+```bash
+$(subst apples,oranges,I love apples)
+```
+
+**Pattern Substitution**
+
+```bash
+INPUTDIR = data
+OUTPUTDIR = output
+CSVS = $(wildcard $(DATA)/*.csv)
+INPUTFILES = $(CSVS:%.csv=$(INPUTDIR)/%.csv)
+OUTPUTFILES = $(CSVS:%.csv=$(OUTPUTDIR)/%.csv)
+```
+
+which is equivalent to:
+
+```bash
+INPUTDIR = csv
+CSVS = $(wildcard *.csv)
+INPUTFILES = $(patsubst %.csv,$(INPUTDIR)/%.csv,$(CSVS))
+```
+
+
+
+
 
 
 ## [Execution](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html)
