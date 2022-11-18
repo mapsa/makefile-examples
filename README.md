@@ -184,7 +184,7 @@ R = @Rscript
 target1:
 <tab>   $(R) myscript.R
 
-target2
+target2:
 <tab>   $(PYTHON) myscript.python
 ```
 - Start your makefile with a phony target called `all`
