@@ -9,6 +9,7 @@ A set of notes and Makefiles examples.
 1. [Automatic Variables](#automatic-variables)
 1. [Execution](#execution)
 1. [Debugging](#debugging)
+1. [More Elegant Options](#more-elegant-options)
 1. [References](#references)
 
 ## Uses
@@ -26,7 +27,7 @@ Make is a build automation tool to build targets based on recipes:
 1. **Prerequisites (optional):** dependencies
 
 ```bash
-target: prerequisite1 prerequisite2 prerequisite3 prerequisite5
+target: prerequisite1 prerequisite2 prerequisite3
 <tab>   command_A
 <tab>   command_B
 
@@ -40,13 +41,23 @@ prerequisite4:
 <tab>   command_E
 ```
 
-<img src="img/makefile.png" alt="drawing" width="400"/>
-
 To perform a build, make will construct a direct acyclic graph (DAG) from the rules.
+
+```mermaid
+graph BT;
+    prerequisite4 --> prerequisite1;
+    prerequisite4 --> prerequisite2;
+    prerequisite1 --> target;
+    prerequisite2 -->target;
+    prerequisite3 -->target;
+```
+
 
 By default, when you type `make` it will try to find a Makefile with the following names, in order: **GNUmakefile**, **makefile** and **Makefile** (the most common one). 
 
 You can also call it differently but you need to run it as `make -f mymakefile`.
+
+
 
 ## [Special Targets](https://www.gnu.org/software/make/manual/html_node/Special-Targets.html)
 
@@ -127,7 +138,7 @@ make -j
 make -j N
 ```
 
-**Rebuild a Target**
+**Always make**
 
 Forces make to ignore existing targets
 
@@ -145,10 +156,43 @@ make target1 -k
 
 ## Debugging
 
-## Visualization
+Print a variable
 
+```bash
+$(info $(MYVAR))
+```
+
+Use the "just print" option
+```bash
+make -n
+```
+
+or combine it with the always make option
+
+ ```bash
+make -Bn
+```
+
+## More Elegant Options
+
+- Use `@` before a command to suppress its output
+- Define your programs as variables
+```
+PYTHON = @python3
+R = @Rscript
+
+target1:
+<tab>   $(R) myscript.R
+
+target2
+<tab>   $(PYTHON) myscript.python
+```
+- Start your makefile with a phony target called `all`
+- Finish your makefile with a phony target called `clean` 
+- Ideally include a phony target called `test`
 
 ## References
 
 - https://www.gnu.org/software/make/manual/html_node/index.html
+- https://www.oreilly.com/library/view/managing-projects-with/0596006101/
 
