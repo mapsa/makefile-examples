@@ -288,19 +288,14 @@ target2:
 -   [01-includes](https://github.com/mapsa/makefile-examples/tree/main/01-includes):
     this example shows the use of includes to manage a set of scenarios
     as configuration files.
-
 -   [02-quarto-params](https://github.com/mapsa/makefile-examples/tree/main/02-quarto-params):
     running a quarto document accepting params defined in the Makefile.
-
 -   [03-quarto-slides](https://github.com/mapsa/makefile-examples/tree/main/03-quarto-slides):
     creating slides as pdf and powerpoint from a quarto document.
-
 -   [04-latex](https://github.com/mapsa/makefile-examples/tree/main/04-latex):
     compile a LaTeX document.
-
 -   [05-functions](https://github.com/mapsa/makefile-examples/tree/main/05-functions):
     how to create targets dinamically using `define`.
-
 -   [06-conda](https://github.com/mapsa/makefile-examples/tree/main/06-conda):
     create and activate conda environments
 
