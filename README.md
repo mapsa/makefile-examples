@@ -55,7 +55,7 @@ prerequisite4:
 To perform a build, make will construct a direct acyclic graph (DAG)
 from the rules.
 
-```{mermaid}
+```mermaid
 graph BT;
     prerequisite4 --> prerequisite1;
     prerequisite4 --> prerequisite2;
