@@ -1,0 +1,16 @@
+project:
+  type: website
+  output-dir: docs
+  render: 
+    - "README.qmd" 
+website:
+  repo-url: https://github.com/mapsa/makefile-examples
+  repo-actions: source
+  
+format:
+  html:
+    toc: true
+    theme: default
+    fontsize: 1.1em
+    linestretch: 1.4
+    mainfont: “Source Sans Pro”, Helvetica, sans-serif
