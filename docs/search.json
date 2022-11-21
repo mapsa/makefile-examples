@@ -1,0 +1,86 @@
+[
+  {
+    "objectID": "README.html",
+    "href": "README.html",
+    "title": "Makefile Essentials for Data Science Projects",
+    "section": "",
+    "text": "A set of notes and Makefiles examples."
+  },
+  {
+    "objectID": "README.html#uses",
+    "href": "README.html#uses",
+    "title": "Makefile Essentials for Data Science Projects",
+    "section": "Uses",
+    "text": "Uses\n\nReproducible Research: useful for sharing a complete analysis (code, data, workflows, report) with collaborators and readers of a final article.\nTask Dependency Management: Make determines which targets needs to be rebuilt based on their dependencies changes. Therefore, you can save time avoid running the entire pipeline after a change.\nPipeline Documentation: By explicitly recording the inputs to and outputs from steps in the analysis and the dependencies between files, Makefiles act as a type of documentation, reducing the number of things we have to remember."
+  },
+  {
+    "objectID": "README.html#basic-concepts",
+    "href": "README.html#basic-concepts",
+    "title": "Makefile Essentials for Data Science Projects",
+    "section": "Basic Concepts",
+    "text": "Basic Concepts\nMake is a build automation tool to build targets based on recipes:\n\nTargets: what to build (a file or a phony target)\nRules: how to build the target\nPrerequisites (optional): dependencies\n\ntarget: prerequisite1 prerequisite2 prerequisite3\n<tab>   command_A\n<tab>   command_B\n\nprerequisite1: prerequisite4\n<tab>   command_C\n\nprerequisite2: prerequisite4\n<tab>   command_D\n\nprerequisite4:\n<tab>   command_E\nTo perform a build, make will construct a direct acyclic graph (DAG) from the rules.\n\n\n\n\ngraph BT;\n    prerequisite4 --> prerequisite1;\n    prerequisite4 --> prerequisite2;\n    prerequisite1 --> target;\n    prerequisite2 -->target;\n    prerequisite3 -->target;\n\n\n\n\n\n\n\n\nBy default, when you type make it will try to find a Makefile with the following names, in order: GNUmakefile, makefile and Makefile (the most common one).\nYou can also call it differently but you need to run it as make -f mymakefile."
+  },
+  {
+    "objectID": "README.html#special-targets",
+    "href": "README.html#special-targets",
+    "title": "Makefile Essentials for Data Science Projects",
+    "section": "Special Targets",
+    "text": "Special Targets\n.PHONY\nThe prerequisites of the special target .PHONY are considered to be phony targets. When it is time to consider such a target, make will run its recipe unconditionally, regardless of whether a file with that name exists or what its last-modification time is.\n.PHONY: all target1 target2 target3 clean\n\nOUTDIR = output\n\nall: target1 target2 \n\ntarget1: prerequisite1\n<tab>   command_A\n\ntarget2: prerequisite1\n<tab>   command_B\n\nclean:\n<tab>   rm -rf $(OUTDIR)\n.EXPORT_ALL_VARIABLES\nSimply by being mentioned as a target, this tells make to export all variables to child processes by default.\n.DELETE_ON_ERROR\nDelete the target of a rule if it has changed and its recipe exits with a nonzero exit status.\n.ONESHELL\nWhen a target is built all lines of the recipe will be given to a single invocation of the shell.\n.DEFAULT_GOAL\nBy default, the goal is the first target in the makefile, you can use DEFAULT_GOAL to change this behaviour."
+  },
+  {
+    "objectID": "README.html#automatic-variables",
+    "href": "README.html#automatic-variables",
+    "title": "Makefile Essentials for Data Science Projects",
+    "section": "Automatic Variables",
+    "text": "Automatic Variables\n\n**$@**\nThe file name of the target of the rule.\ntarget1: prerequisite1\n<tab>   echo $@\nWill print target1.\n\n\n$<\nThe name of the first prerequisite.\ntarget1: prerequisite1 prerequisite2\n<tab>   echo $<\nWill print prerequisite1.\n\n\n$*\nThe stem with which an implicit rule matches.\n$(OUTDIR)/my_%_file.csv: prerequisite1 \n<tab>   echo $*\nIf in the folder OUTDIR you have a csv file called my_first_file.csv, this will print first."
+  },
+  {
+    "objectID": "README.html#text-functions",
+    "href": "README.html#text-functions",
+    "title": "Makefile Essentials for Data Science Projects",
+    "section": "Text Functions",
+    "text": "Text Functions\nWildcards\nCSVS = $(wildcard *.csv)\nString Substitution\nRemember not adding spaces between commas:\n$(subst apples,oranges,I love apples)\nPattern Substitution\nINPUTDIR = data\nOUTPUTDIR = output\nCSVS = $(wildcard $(DATA)/*.csv)\nINPUTFILES = $(CSVS:%.csv=$(INPUTDIR)/%.csv)\nOUTPUTFILES = $(CSVS:%.csv=$(OUTPUTDIR)/%.csv)\nwhich is equivalent to:\nINPUTDIR = csv\nCSVS = $(wildcard *.csv)\nINPUTFILES = $(patsubst %.csv,$(INPUTDIR)/%.csv,$(CSVS))"
+  },
+  {
+    "objectID": "README.html#execution",
+    "href": "README.html#execution",
+    "title": "Makefile Essentials for Data Science Projects",
+    "section": "Execution",
+    "text": "Execution\nParallel Execution\nYou can use -j to run in parallel (limited to number of CPUs and RAM available) or specify the number of parallel processes N.\nmake -j\nmake -j N\nAlways make\nForces make to ignore existing targets\nmake target1 -B\nKeep Going\nContinue as much as possible after an error.\nmake target1 -k"
+  },
+  {
+    "objectID": "README.html#debugging",
+    "href": "README.html#debugging",
+    "title": "Makefile Essentials for Data Science Projects",
+    "section": "Debugging",
+    "text": "Debugging\nPrint a variable\n$(info $(MYVAR))\nDry run: Use the “just print” option\nmake -n\nor combine it with the always make option\nmake -Bn"
+  },
+  {
+    "objectID": "README.html#more-elegant-options",
+    "href": "README.html#more-elegant-options",
+    "title": "Makefile Essentials for Data Science Projects",
+    "section": "More Elegant Options",
+    "text": "More Elegant Options\n\nUse @ before a command to suppress its output\nDefine your programs as variables\n\nPYTHON = @python3\nR = @Rscript\n\ntarget1:\n<tab>   $(R) myscript.R\n\ntarget2:\n<tab>   $(PYTHON) myscript.python"
+  },
+  {
+    "objectID": "README.html#standard-targets",
+    "href": "README.html#standard-targets",
+    "title": "Makefile Essentials for Data Science Projects",
+    "section": "Standard Targets",
+    "text": "Standard Targets\n\nall: Make all the top-level targets the makefile knows about.\nclean: Delete all files that are normally created by running make.\ninstall: this generally copy the executable file into a directory that users typically search for commands.\ntest: Perform self tests on the program this makefile builds."
+  },
+  {
+    "objectID": "README.html#non-standards-targets",
+    "href": "README.html#non-standards-targets",
+    "title": "Makefile Essentials for Data Science Projects",
+    "section": "Non-standards Targets",
+    "text": "Non-standards Targets\n\nvenv: creates a virtual environment\nhelp: it might be usefult to achieve a self-documented Makefile.\n.PHONY: help\nhelp:\n<tab>   @echo Run a simulation and generate a report\n<tab>   @echo sim         : run only the simulation\n<tab>   @echo report      : generate a report\n<tab>   @echo clean       : delete simulation and report\nvariables: you could also create a target to print variables.\n.PHONY : variables\nvariables:\n<tab>   @echo INPUT_DIR: $(INPUT_DIR)\n<tab>   @echo CSV_FILES: $(CSV_FILES)\nExamples\n01-includes: this example shows the use of includes to manage a set of scenarios as configuration files.\n02-quarto-params: running a quarto document accepting params defined in the Makefile.\n03-quarto-slides: creating slides as pdf and powerpoint from a quarto document.\n04-latex: compile a LaTeX document.\n05-functions: how to create targets dinamically using define.\n06-conda: create and activate conda environments"
+  },
+  {
+    "objectID": "README.html#references",
+    "href": "README.html#references",
+    "title": "Makefile Essentials for Data Science Projects",
+    "section": "References",
+    "text": "References\n\nhttps://www.gnu.org/software/make/manual/html_node/index.html\nhttps://www.oreilly.com/library/view/managing-projects-with/0596006101/\nhttps://the-turing-way.netlify.app/reproducible-research/make.html\nhttps://gertjanvandenburg.com/files/talk/make.html\n\n\n\n\n\n\n\nNote\n\n\n\nA website view of this repo can be seen here. The repo is available here."
+  }
+]
