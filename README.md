@@ -11,13 +11,15 @@ A set of notes and Makefiles examples.
 1. [Execution](#execution)
 1. [Debugging](#debugging)
 1. [More Elegant Options](#more-elegant-options)
+1. [Standard Targets](#standard-targets)
+1. [Non-standard Targets](#non-standards-targets)
 1. [References](#references)
 
 ## Uses
 
-1. **Reproducible Research**
-1. **Task Dependency Management**
-1. **Pipeline Documentation**
+1. **Reproducible Research**: useful for sharing a complete analysis (code, data, workflows, report) with collaborators and readers of a final article.
+1. **Task Dependency Management**: Make determines which targets needs to be rebuilt based on their dependencies changes. Therefore, you can save time avoid running the entire pipeline after a change. 
+1. **Pipeline Documentation**: By explicitly recording the inputs to and outputs from steps in the analysis and the dependencies between files, Makefiles act as a type of documentation, reducing the number of things we have to remember.
 
 ## Basic Concepts
 
@@ -95,6 +97,10 @@ Delete the target of a rule if it has changed and its recipe exits with a nonzer
 
  When a target is built all lines of the recipe will be given to a single invocation of the shell.
 
+ **.DEFAULT_GOAL**
+
+By default, the goal is the first target in the makefile, you can use DEFAULT_GOAL to change this behaviour.
+
 ## [Automatic Variables](https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html)
 
 ### **$@**
@@ -163,10 +169,6 @@ INPUTFILES = $(patsubst %.csv,$(INPUTDIR)/%.csv,$(CSVS))
 ```
 
 
-
-
-
-
 ## [Execution](https://www.gnu.org/software/make/manual/html_node/Options-Summary.html)
 
 **Parallel Execution**
@@ -201,7 +203,7 @@ Print a variable
 $(info $(MYVAR))
 ```
 
-Use the "just print" option
+Dry run: Use the "just print" option
 ```bash
 make -n
 ```
@@ -216,7 +218,7 @@ make -Bn
 
 - Use `@` before a command to suppress its output
 - Define your programs as variables
-```
+```bash
 PYTHON = @python3
 R = @Rscript
 
@@ -226,12 +228,38 @@ target1:
 target2:
 <tab>   $(PYTHON) myscript.python
 ```
-- Start your makefile with a phony target called `all`
-- Finish your makefile with a phony target called `clean` 
-- Ideally include a phony target called `test`
+
+## [Standard Targets](https://www.gnu.org/software/make/manual/html_node/Goals.html)
+
+- `all`: Make all the top-level targets the makefile knows about.
+- `clean`: Delete all files that are normally created by running make.
+- `install`: this generally copy the executable file into a directory that users typically search for commands. 
+- `test`: Perform self tests on the program this makefile builds.
+
+## Non-standards Targets
+
+- `venv`: creates a virtual environment
+- `help`: it might be usefult to achieve a self-documented Makefile.
+    ```bash
+    .PHONY: help
+    help:
+    <tab>   @echo Run a simulation and generate a report
+    <tab>   @echo sim         : run only the simulation
+    <tab>   @echo report      : generate a report
+    <tab>   @echo clean       : delete simulation and report
+    ```
+- `variables`: you could also create a target to print variables.
+    ```bash
+    .PHONY : variables
+    variables:
+    <tab>   @echo INPUT_DIR: $(INPUT_DIR)
+    <tab>   @echo CSV_FILES: $(CSV_FILES)
+    ```
 
 ## References
 
 - https://www.gnu.org/software/make/manual/html_node/index.html
 - https://www.oreilly.com/library/view/managing-projects-with/0596006101/
+- https://the-turing-way.netlify.app/reproducible-research/make.html
+- https://gertjanvandenburg.com/files/talk/make.html
 
