@@ -298,6 +298,8 @@ target2:
     how to create targets dinamically using `define`.
 -   [06-conda](https://github.com/mapsa/makefile-examples/tree/main/06-conda):
     create and activate conda environments
+-   [07-help](https://github.com/mapsa/makefile-examples/tree/main/07-help):
+    how to document makefiles
 
 ## References
 
