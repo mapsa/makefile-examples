@@ -38,18 +38,12 @@ Make is a build automation tool to build targets based on recipes:
 3.  **Prerequisites (optional):** dependencies
 
 ``` bash
-target: prerequisite1 prerequisite2 prerequisite3
-<tab>   command_A
-<tab>   command_B
+index.html: dashboard.py stats.csv
+<tab>   python dashboard.py stats.csv
+<tab>   echo index created
 
-prerequisite1: prerequisite4
-<tab>   command_C
-
-prerequisite2: prerequisite4
-<tab>   command_D
-
-prerequisite4:
-<tab>   command_E
+stats.csv: stats.py data.csv
+<tab>   python stats.py data.csv
 ```
 
 To perform a build, make will construct a direct acyclic graph (DAG)
@@ -57,11 +51,10 @@ from the rules.
 
 ```mermaid
 graph BT;
-    prerequisite4 --> prerequisite1;
-    prerequisite4 --> prerequisite2;
-    prerequisite1 --> target;
-    prerequisite2 -->target;
-    prerequisite3 -->target;
+    dashboard.py --> index.html;
+    stats.csv --> index.html;
+    stats.py --> stats.csv
+    data.csv --> stats.csv
 ```
 
 By default, when you type `make` it will try to find a Makefile with the
@@ -119,7 +112,7 @@ DEFAULT_GOAL to change this behaviour.
 
 ## [Automatic Variables](https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html)
 
-### \*\*\$@*\*
+### **\$@**
 
 The file name of the target of the rule.
 
