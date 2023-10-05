@@ -293,6 +293,8 @@ target2:
     create and activate conda environments
 -   [07-help](https://github.com/mapsa/makefile-examples/tree/main/07-help):
     how to document makefiles
+-   [08-aws](https://github.com/mapsa/makefile-examples/tree/main/08-aws):
+    useful targets to deal with AWS credentials and S3
 
 ## References
 
